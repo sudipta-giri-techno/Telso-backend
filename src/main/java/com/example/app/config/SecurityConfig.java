@@ -43,15 +43,44 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(customAccessDeniedHandler)
             )
+           
             .authorizeHttpRequests(auth -> auth
+                // Swagger UI and OpenAPI documentation
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**"
+                ).permitAll()
+
+                // Public endpoints
                 .requestMatchers("/api/ping", "/api/health").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users", "/api/users/**").hasRole("CENTRAL_ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/schools", "/api/schools/**").hasRole("CENTRAL_ADMIN")
-                .requestMatchers("/api/users/export", "/api/users/export/**").hasRole("CENTRAL_ADMIN")
-                .requestMatchers("/api/schools/export", "/api/schools/export/**").hasRole("CENTRAL_ADMIN")
-                .requestMatchers("/api/users", "/api/users/**").hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
-                .requestMatchers("/api/schools/stats").hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
+
+                // Central admin only
+                .requestMatchers(
+                    HttpMethod.POST, "/api/users", "/api/users/**"
+                ).hasRole("CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    HttpMethod.POST, "/api/schools", "/api/schools/**"
+                ).hasRole("CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    "/api/users/export", "/api/users/export/**"
+                ).hasRole("CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    "/api/schools/export", "/api/schools/export/**"
+                ).hasRole("CENTRAL_ADMIN")
+
+                // Admin user listing and related endpoints
+                .requestMatchers("/api/users", "/api/users/**")
+                .hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
+
+                .requestMatchers("/api/schools/stats")
+                .hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
+
+                // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
