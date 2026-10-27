@@ -21,6 +21,7 @@ com\example\app\security\JwtAuthenticationEntryPoint.class
 com\example\app\dto\request\UserRequest.class
 com\example\app\dto\response\SchoolResponse$SchoolResponseBuilder.class
 com\example\app\service\impl\AuthServiceImpl.class
+com\example\app\config\OpenApiConfig.class
 com\example\app\mapper\SchoolMapper.class
 com\example\app\enums\Permission.class
 com\example\app\dto\response\UserResponse.class

@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/appdb
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: change-me
+    password: root #change-me
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 20000
