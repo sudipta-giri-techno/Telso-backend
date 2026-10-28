@@ -80,6 +80,20 @@ public class SecurityConfig {
                 .requestMatchers("/api/schools/stats")
                 .hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
 
+                // Content upload restricted ONLY to CONTENT_ADMIN
+                .requestMatchers(
+                    HttpMethod.POST, "/api/contents", "/api/contents/**"
+                ).hasRole("CONTENT_ADMIN")
+
+                .requestMatchers(
+                    HttpMethod.DELETE, "/api/contents/**"
+                ).hasRole("CONTENT_ADMIN")
+
+                // Content library viewing and metrics
+                .requestMatchers(
+                    "/api/contents", "/api/contents/**"
+                ).hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
+
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )

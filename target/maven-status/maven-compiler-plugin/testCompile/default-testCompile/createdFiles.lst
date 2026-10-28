@@ -1,4 +1,5 @@
 com\example\app\security\SecurityIntegrationTests.class
+com\example\app\controller\ContentControllerIntegrationTests.class
 com\example\app\mapper\UserMapperTest.class
 com\example\app\ApplicationTests.class
 com\example\app\controller\AuthRegisterIntegrationTests.class

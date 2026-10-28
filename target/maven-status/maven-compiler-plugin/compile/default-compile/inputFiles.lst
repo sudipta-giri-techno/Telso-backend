@@ -3,9 +3,11 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\config\PasswordConfig.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\config\SecurityConfig.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\AuthController.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\ContentController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\HealthController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\SchoolController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\UserController.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\ContentUploadRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\ForgotPasswordRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\LoginRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\RegisterRequest.java
@@ -13,6 +15,8 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\SchoolCreateRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\UserRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\VerifyOtpRequest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentResponse.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentStatsResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\LoginResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\MessageResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\PagedResponse.java
@@ -21,8 +25,10 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\UserResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\UserStatsResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\VerifyOtpResponse.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\Content.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\School.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\User.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\ContentType.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\Permission.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\Role.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\SchoolStatus.java
@@ -33,6 +39,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\exception\UnauthorizedException.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\mapper\SchoolMapper.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\mapper\UserMapper.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\ContentRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\SchoolRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\UserRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\security\CustomAccessDeniedHandler.java
@@ -42,7 +49,9 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\security\JwtAuthenticationFilter.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\security\JwtTokenProvider.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\AuthService.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\ContentService.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\AuthServiceImpl.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\ContentServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\SchoolServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\UserServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\SchoolService.java
