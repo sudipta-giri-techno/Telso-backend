@@ -3,4 +3,5 @@ com\example\app\controller\ContentControllerIntegrationTests.class
 com\example\app\mapper\UserMapperTest.class
 com\example\app\ApplicationTests.class
 com\example\app\controller\AuthRegisterIntegrationTests.class
+com\example\app\controller\QuestionSetControllerIntegrationTests.class
 com\example\app\mapper\SchoolMapperTest.class

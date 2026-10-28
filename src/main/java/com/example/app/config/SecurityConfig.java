@@ -94,6 +94,23 @@ public class SecurityConfig {
                     "/api/contents", "/api/contents/**"
                 ).hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
 
+                // Question Sets management and viewing
+                .requestMatchers(
+                    HttpMethod.POST, "/api/question-sets", "/api/question-sets/**"
+                ).hasAnyRole("CONTENT_ADMIN", "CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    HttpMethod.PUT, "/api/question-sets/**"
+                ).hasAnyRole("CONTENT_ADMIN", "CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    HttpMethod.DELETE, "/api/question-sets/**"
+                ).hasAnyRole("CONTENT_ADMIN", "CENTRAL_ADMIN")
+
+                .requestMatchers(
+                    "/api/question-sets", "/api/question-sets/**"
+                ).hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
+
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )
