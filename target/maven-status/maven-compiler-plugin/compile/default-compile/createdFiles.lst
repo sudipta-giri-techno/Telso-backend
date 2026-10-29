@@ -20,6 +20,7 @@ com\example\app\security\CustomAccessDeniedHandler.class
 com\example\app\security\JwtAuthenticationFilter.class
 com\example\app\repository\QuestionSetRepository.class
 com\example\app\dto\response\QuestionResponse.class
+com\example\app\dto\response\QuestionSetListResponse$QuestionSetListResponseBuilder.class
 com\example\app\security\JwtAuthenticationEntryPoint.class
 com\example\app\dto\request\TeacherUpdateRequest.class
 com\example\app\dto\response\SchoolResponse$SchoolResponseBuilder.class
@@ -52,6 +53,7 @@ com\example\app\controller\UserController.class
 com\example\app\entity\Content.class
 com\example\app\entity\Teacher.class
 com\example\app\enums\UserStatus.class
+com\example\app\dto\response\QuestionSetListResponse.class
 com\example\app\dto\response\SchoolResponse.class
 com\example\app\service\UserService.class
 com\example\app\service\AuthService.class

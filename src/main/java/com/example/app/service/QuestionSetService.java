@@ -6,8 +6,8 @@ import com.example.app.dto.request.QuestionSetUpdateRequest;
 import com.example.app.dto.request.QuestionUpdateRequest;
 import com.example.app.dto.response.PagedResponse;
 import com.example.app.dto.response.QuestionResponse;
+import com.example.app.dto.response.QuestionSetListResponse;
 import com.example.app.dto.response.QuestionSetResponse;
-import com.example.app.dto.response.QuestionSetStatsResponse;
 import com.example.app.enums.DifficultyLevel;
 import com.example.app.enums.QuestionSetStatus;
 import com.example.app.enums.QuestionType;
@@ -22,14 +22,11 @@ public interface QuestionSetService {
     QuestionSetResponse createQuestionSet(QuestionSetCreateRequest request, String creatorEmail);
 
     /**
-     * Get aggregate statistics for Question Sets (Total, Ready, Draft, Archived).
-     */
-    QuestionSetStatsResponse getQuestionSetStats();
-
-    /**
      * Get paginated Question Sets with optional filtering.
+     * Always includes live status counts (total, ready, draft, archived)
+     * so callers do not need a separate stats endpoint.
      */
-    PagedResponse<QuestionSetResponse> getQuestionSets(
+    QuestionSetListResponse getQuestionSets(
             String search,
             String targetClass,
             String subject,

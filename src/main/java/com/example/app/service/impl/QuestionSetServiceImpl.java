@@ -6,8 +6,8 @@ import com.example.app.dto.request.QuestionSetUpdateRequest;
 import com.example.app.dto.request.QuestionUpdateRequest;
 import com.example.app.dto.response.PagedResponse;
 import com.example.app.dto.response.QuestionResponse;
+import com.example.app.dto.response.QuestionSetListResponse;
 import com.example.app.dto.response.QuestionSetResponse;
-import com.example.app.dto.response.QuestionSetStatsResponse;
 import com.example.app.entity.Question;
 import com.example.app.entity.QuestionSet;
 import com.example.app.entity.User;
@@ -110,23 +110,7 @@ public class QuestionSetServiceImpl implements QuestionSetService {
 
     @Override
     @Transactional(readOnly = true)
-    public QuestionSetStatsResponse getQuestionSetStats() {
-        long total = questionSetRepository.count();
-        long ready = questionSetRepository.countByStatus(QuestionSetStatus.READY);
-        long draft = questionSetRepository.countByStatus(QuestionSetStatus.DRAFT);
-        long archived = questionSetRepository.countByStatus(QuestionSetStatus.ARCHIVED);
-
-        return QuestionSetStatsResponse.builder()
-                .totalQuestionSets(total)
-                .readySets(ready)
-                .draftSets(draft)
-                .archivedSets(archived)
-                .build();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public PagedResponse<QuestionSetResponse> getQuestionSets(
+    public QuestionSetListResponse getQuestionSets(
             String search,
             String targetClass,
             String subject,
@@ -137,11 +121,11 @@ public class QuestionSetServiceImpl implements QuestionSetService {
             int page,
             int size
     ) {
-        String cleanSearch = (search != null && !search.isBlank()) ? search.trim() : null;
-        String cleanClass = (targetClass != null && !targetClass.isBlank() && !targetClass.equalsIgnoreCase("All Classes")) ? targetClass.trim() : null;
+        String cleanSearch  = (search != null && !search.isBlank()) ? search.trim() : null;
+        String cleanClass   = (targetClass != null && !targetClass.isBlank() && !targetClass.equalsIgnoreCase("All Classes")) ? targetClass.trim() : null;
         String cleanSubject = (subject != null && !subject.isBlank() && !subject.equalsIgnoreCase("All Subjects")) ? subject.trim() : null;
         String cleanChapter = (chapter != null && !chapter.isBlank() && !chapter.equalsIgnoreCase("All Chapters")) ? chapter.trim() : null;
-        String cleanTopic = (topic != null && !topic.isBlank() && !topic.equalsIgnoreCase("All Topics")) ? topic.trim() : null;
+        String cleanTopic   = (topic != null && !topic.isBlank() && !topic.equalsIgnoreCase("All Topics")) ? topic.trim() : null;
 
         String cleanLang = null;
         if (language != null && !language.isBlank() && !language.equalsIgnoreCase("All Languages")) {
@@ -163,13 +147,23 @@ public class QuestionSetServiceImpl implements QuestionSetService {
                 .map(set -> QuestionSetResponse.from(set, false))
                 .collect(Collectors.toList());
 
-        return new PagedResponse<>(
-                responses,
-                setPage.getNumber(),
-                setPage.getSize(),
-                setPage.getTotalElements(),
-                setPage.getTotalPages()
-        );
+        // Always compute live status counts (unfiltered totals)
+        long total    = questionSetRepository.count();
+        long ready    = questionSetRepository.countByStatus(QuestionSetStatus.READY);
+        long draft    = questionSetRepository.countByStatus(QuestionSetStatus.DRAFT);
+        long archived = questionSetRepository.countByStatus(QuestionSetStatus.ARCHIVED);
+
+        return QuestionSetListResponse.builder()
+                .content(responses)
+                .page(setPage.getNumber())
+                .size(setPage.getSize())
+                .totalItems(setPage.getTotalElements())
+                .totalPages(setPage.getTotalPages())
+                .totalQuestionSets(total)
+                .readySets(ready)
+                .draftSets(draft)
+                .archivedSets(archived)
+                .build();
     }
 
     @Override

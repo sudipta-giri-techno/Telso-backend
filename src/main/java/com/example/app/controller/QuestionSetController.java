@@ -6,8 +6,8 @@ import com.example.app.dto.request.QuestionSetUpdateRequest;
 import com.example.app.dto.request.QuestionUpdateRequest;
 import com.example.app.dto.response.PagedResponse;
 import com.example.app.dto.response.QuestionResponse;
+import com.example.app.dto.response.QuestionSetListResponse;
 import com.example.app.dto.response.QuestionSetResponse;
-import com.example.app.dto.response.QuestionSetStatsResponse;
 import com.example.app.enums.DifficultyLevel;
 import com.example.app.enums.QuestionSetStatus;
 import com.example.app.enums.QuestionType;
@@ -55,24 +55,15 @@ public class QuestionSetController {
     }
 
     /**
-     * Retrieve status metrics of question sets (total, ready, draft, archived sets).
-     */
-    @GetMapping({"/status", "/stats"})
-    @PreAuthorize("hasAnyRole('CONTENT_ADMIN', 'CENTRAL_ADMIN')")
-    @Operation(summary = "Get Question Set Status Metrics",
-               description = "Returns aggregated counts for Total Question Sets, Ready Sets, Draft Sets, and Archived Sets.")
-    public ResponseEntity<QuestionSetStatsResponse> getQuestionSetStatus() {
-        return ResponseEntity.ok(questionSetService.getQuestionSetStats());
-    }
-
-    /**
      * Retrieve paginated Question Sets with search and filters.
+     * The response always includes live status counts (total, ready, draft, archived).
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('CONTENT_ADMIN', 'CENTRAL_ADMIN')")
     @Operation(summary = "Get Question Sets (paginated with filters)",
-               description = "Search and filter question sets by name, class, subject, chapter, topic, status, and language.")
-    public ResponseEntity<PagedResponse<QuestionSetResponse>> getQuestionSets(
+               description = "Search and filter question sets by name, class, subject, chapter, topic, status, and language. " +
+                             "Status counts (totalQuestionSets, readySets, draftSets, archivedSets) are always included in the response.")
+    public ResponseEntity<QuestionSetListResponse> getQuestionSets(
             @Parameter(description = "Search term in name, setId, class, subject, chapter, or topic")
             @RequestParam(required = false) String search,
 
