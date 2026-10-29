@@ -14,10 +14,12 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -32,23 +34,26 @@ public class ContentController {
     private final ContentService contentService;
 
     /**
-     * Upload educational content.
+     * Upload educational content with PDF files.
      * Accessible exclusively to CONTENT_ADMIN.
-     * Contains language PDF file paths for English and Manipuri.
      */
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('CONTENT_ADMIN')")
-    @Operation(summary = "Upload educational content",
+    @Operation(summary = "Upload educational content with PDF files",
                description = """
                    Only users with CONTENT_ADMIN role can upload content.
-                   Provide 'englishFilePath' and/or 'manipuriFilePath' with the stored PDF paths.
-                   Language selection is also auto-inferred from the provided file paths.
+                   Send multipart/form-data with:
+                   'data' (JSON, application/json) holding the content details,
+                   'englishFile' and/or 'manipuriFile' (PDF files). At least one PDF is required.
                    """)
     public ResponseEntity<ContentResponse> uploadContent(
-            @Valid @RequestBody ContentUploadRequest request,
+            @Valid @RequestPart("data") ContentUploadRequest request,
+            @RequestPart(value = "englishFile", required = false) MultipartFile englishFile,
+            @RequestPart(value = "manipuriFile", required = false) MultipartFile manipuriFile,
             Principal principal) {
         String uploaderEmail = principal != null ? principal.getName() : null;
-        ContentResponse response = contentService.uploadContent(request, uploaderEmail);
+        ContentResponse response =
+                contentService.uploadContent(request, englishFile, manipuriFile, uploaderEmail);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -50,22 +50,9 @@ public class ContentUploadRequest {
     private String notes;
 
     /**
-     * File path / URL for the English PDF uploaded for this content.
-     * Sent by the client after the file is stored (e.g. via a pre-upload endpoint).
-     */
-    @Size(max = 1000, message = "English file path must not exceed 1000 characters")
-    private String englishFilePath;
-
-    /**
-     * File path / URL for the Manipuri PDF uploaded for this content.
-     * Sent by the client after the file is stored (e.g. via a pre-upload endpoint).
-     */
-    @Size(max = 1000, message = "Manipuri file path must not exceed 1000 characters")
-    private String manipuriFilePath;
-
-    /**
      * Selected languages: English and/or Manipuri (Monipuri).
      * User can select both or one (e.g. ["English", "Manipuri"], ["EN", "MR"]).
+     * If empty, languages are inferred from the uploaded PDF files.
      */
     @Builder.Default
     private Set<String> languages = new LinkedHashSet<>();
@@ -85,9 +72,7 @@ public class ContentUploadRequest {
     }
 
     /**
-     * Resolves the selected languages into normalized set of codes (EN, MR).
-     * Also auto-detects languages from provided file paths when explicit flags
-     * or language list are not set.
+     * Resolves the selected languages into a normalized set of codes (EN, MR).
      */
     public Set<String> resolveLanguages() {
         Set<String> resolved = new LinkedHashSet<>();
@@ -110,15 +95,6 @@ public class ContentUploadRequest {
         }
         if (Boolean.TRUE.equals(manipuri)) {
             resolved.add("MR");
-        }
-        // Auto-detect from file paths if language set is still empty
-        if (resolved.isEmpty()) {
-            if (englishFilePath != null && !englishFilePath.isBlank()) {
-                resolved.add("EN");
-            }
-            if (manipuriFilePath != null && !manipuriFilePath.isBlank()) {
-                resolved.add("MR");
-            }
         }
         return resolved;
     }

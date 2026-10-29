@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +36,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+// Test uploads go to target/, not the real uploads/ folder.
+@SpringBootTest(properties = "app.upload.dir=target/test-uploads")
 @AutoConfigureMockMvc
 @Transactional
 class ContentControllerIntegrationTests {
@@ -107,6 +109,22 @@ class ContentControllerIntegrationTests {
         });
     }
 
+    // ---------- multipart helpers ----------
+
+    private MockMultipartFile dataPart(Map<String, Object> body) throws Exception {
+        return new MockMultipartFile(
+                "data", "", MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsBytes(body));
+    }
+
+    private MockMultipartFile pdfPart(String partName, String fileName) {
+        return new MockMultipartFile(
+                partName, fileName, "application/pdf",
+                "%PDF-1.4 test content".getBytes());
+    }
+
+    // ---------- upload tests ----------
+
     @Test
     @DisplayName("Content Admin uploads content with English and Manipuri")
     void contentAdminCanUploadContentWithBothLanguages() throws Exception {
@@ -123,9 +141,10 @@ class ContentControllerIntegrationTests {
         body.put("notes", "Uploaded initial version");
         body.put("languages", List.of("English", "Manipuri"));
 
-        mockMvc.perform(post("/api/contents")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(body))
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("englishFile", "science-en.pdf"))
+                        .file(pdfPart("manipuriFile", "science-mr.pdf"))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andDo(print())
@@ -161,15 +180,34 @@ class ContentControllerIntegrationTests {
         body.put("topic", "Delhi Sultanate");
         body.put("languages", List.of("English"));
 
-        mockMvc.perform(post("/api/contents")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(body))
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("englishFile", "history-en.pdf"))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("History Textbook"))
                 .andExpect(jsonPath("$.languages", contains("EN")));
+    }
+
+    @Test
+    @DisplayName("Languages are inferred from uploaded files when not provided")
+    void languagesAreInferredFromUploadedFiles() throws Exception {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("title", "Manipuri Reader");
+        body.put("contentType", "TEXTBOOK");
+        body.put("targetClass", "6");
+        body.put("subject", "Manipuri");
+
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("manipuriFile", "reader-mr.pdf"))
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + contentAdminToken))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.languages", contains("MR")));
     }
 
     @Test
@@ -183,9 +221,9 @@ class ContentControllerIntegrationTests {
         body.put("subject", "History");
         body.put("languages", List.of("English"));
 
-        mockMvc.perform(post("/api/contents")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(body))
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("englishFile", "attempt.pdf"))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + centralAdminToken))
                 .andExpect(status().isForbidden());
@@ -201,9 +239,9 @@ class ContentControllerIntegrationTests {
         body.put("targetClass", "10");
         body.put("subject", "Physics");
 
-        mockMvc.perform(post("/api/contents")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(body))
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("englishFile", "attempt.pdf"))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + regularUserToken))
                 .andExpect(status().isForbidden());
@@ -219,11 +257,13 @@ class ContentControllerIntegrationTests {
         body.put("targetClass", "10");
         body.put("subject", "Science");
 
-        mockMvc.perform(post("/api/contents")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(body)))
+        mockMvc.perform(multipart("/api/contents")
+                        .file(dataPart(body))
+                        .file(pdfPart("englishFile", "attempt.pdf")))
                 .andExpect(status().isUnauthorized());
     }
+
+    // ---------- library tests ----------
 
     @Test
     @DisplayName("Content library supports filtering and pagination")
@@ -244,9 +284,6 @@ class ContentControllerIntegrationTests {
         createSampleContent(
                 "Manipuri Grammar Notes", ContentType.NOTES_AND_REFERENCES,
                 "6", "Manipuri", Set.of("MR"));
-
-        // Assumes ContentLibraryResponse contains a "contents" property
-        // whose value is the paginated response.
 
         // 1. All contents
         mockMvc.perform(get("/api/contents")

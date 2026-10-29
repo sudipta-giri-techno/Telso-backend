@@ -12,6 +12,7 @@ import com.example.app.exception.ResourceNotFoundException;
 import com.example.app.repository.ContentRepository;
 import com.example.app.repository.UserRepository;
 import com.example.app.service.ContentService;
+import com.example.app.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -35,18 +39,42 @@ public class ContentServiceImpl implements ContentService {
 
     private final ContentRepository contentRepository;
     private final UserRepository userRepository;
+    private final FileStorageService fileStorageService;
 
     @Override
-    public ContentResponse uploadContent(ContentUploadRequest request, String uploaderEmail) {
+    public ContentResponse uploadContent(ContentUploadRequest request,
+                                         MultipartFile englishFile,
+                                         MultipartFile manipuriFile,
+                                         String uploaderEmail) {
         log.info("Uploading content title='{}', type='{}', class='{}', subject='{}' by user='{}'",
-                request.getTitle(), request.getContentType(), request.getTargetClass(), request.getSubject(), uploaderEmail);
+                request.getTitle(), request.getContentType(), request.getTargetClass(),
+                request.getSubject(), uploaderEmail);
+
+        // Remove this check if you want to allow uploads without any PDF.
+        boolean hasEnglish = englishFile != null && !englishFile.isEmpty();
+        boolean hasManipuri = manipuriFile != null && !manipuriFile.isEmpty();
+        if (!hasEnglish && !hasManipuri) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "At least one PDF file (englishFile or manipuriFile) is required");
+        }
 
         User uploader = null;
         if (uploaderEmail != null && !uploaderEmail.isBlank()) {
             uploader = userRepository.findByEmail(uploaderEmail).orElse(null);
         }
 
-        Set<String> resolvedLanguages = request.resolveLanguages();
+        String englishPath = fileStorageService.storePdf(englishFile, "english");
+        String manipuriPath = fileStorageService.storePdf(manipuriFile, "manipuri");
+
+        Set<String> resolvedLanguages = new LinkedHashSet<>(request.resolveLanguages());
+        if (resolvedLanguages.isEmpty()) {
+            if (englishPath != null) {
+                resolvedLanguages.add("EN");
+            }
+            if (manipuriPath != null) {
+                resolvedLanguages.add("MR");
+            }
+        }
 
         Content content = Content.builder()
                 .title(request.getTitle().trim())
@@ -58,11 +86,9 @@ public class ContentServiceImpl implements ContentService {
                 .topic(request.getTopic() != null && !request.getTopic().isBlank() ? request.getTopic().trim() : null)
                 .keywords(request.getKeywords() != null && !request.getKeywords().isBlank() ? request.getKeywords().trim() : null)
                 .notes(request.getNotes() != null && !request.getNotes().isBlank() ? request.getNotes().trim() : null)
-                .englishFilePath(request.getEnglishFilePath() != null && !request.getEnglishFilePath().isBlank()
-                        ? request.getEnglishFilePath().trim() : null)
-                .manipuriFilePath(request.getManipuriFilePath() != null && !request.getManipuriFilePath().isBlank()
-                        ? request.getManipuriFilePath().trim() : null)
-                .languages(new LinkedHashSet<>(resolvedLanguages))
+                .englishFilePath(englishPath)
+                .manipuriFilePath(manipuriPath)
+                .languages(resolvedLanguages)
                 .uploadedBy(uploader)
                 .active(true)
                 .build();

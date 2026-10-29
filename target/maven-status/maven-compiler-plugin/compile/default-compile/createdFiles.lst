@@ -32,6 +32,7 @@ com\example\app\dto\request\QuestionSetUpdateRequest$QuestionSetUpdateRequestBui
 com\example\app\dto\request\VerifyOtpRequest.class
 com\example\app\dto\response\LoginResponse.class
 com\example\app\enums\QuestionType.class
+com\example\app\service\FileStorageService.class
 com\example\app\enums\DifficultyLevel.class
 com\example\app\dto\request\QuestionSetCreateRequest.class
 com\example\app\entity\User$UserBuilder.class
