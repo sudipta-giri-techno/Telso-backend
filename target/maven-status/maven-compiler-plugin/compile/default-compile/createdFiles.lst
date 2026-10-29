@@ -1,6 +1,7 @@
 com\example\app\repository\QuestionRepository.class
 com\example\app\dto\request\QuestionCreateRequest$QuestionCreateRequestBuilder.class
 com\example\app\dto\request\QuestionSetUpdateRequest.class
+com\example\app\entity\Teacher$TeacherBuilder.class
 com\example\app\dto\response\QuestionSetResponse$QuestionSetResponseBuilder.class
 com\example\app\dto\response\QuestionResponse$1.class
 com\example\app\dto\request\ResetPasswordRequest.class
@@ -20,10 +21,14 @@ com\example\app\security\JwtAuthenticationFilter.class
 com\example\app\repository\QuestionSetRepository.class
 com\example\app\dto\response\QuestionResponse.class
 com\example\app\security\JwtAuthenticationEntryPoint.class
+com\example\app\dto\request\TeacherUpdateRequest.class
 com\example\app\dto\response\SchoolResponse$SchoolResponseBuilder.class
+com\example\app\controller\TeacherController.class
 com\example\app\service\impl\AuthServiceImpl.class
+com\example\app\service\impl\TeacherServiceImpl.class
 com\example\app\config\OpenApiConfig.class
 com\example\app\mapper\SchoolMapper.class
+com\example\app\dto\response\TeacherResponse$TeacherResponseBuilder.class
 com\example\app\dto\response\UserResponse.class
 com\example\app\dto\response\QuestionSetStatsResponse$QuestionSetStatsResponseBuilder.class
 com\example\app\entity\Question$QuestionBuilder.class
@@ -34,6 +39,7 @@ com\example\app\dto\response\LoginResponse.class
 com\example\app\enums\QuestionType.class
 com\example\app\service\FileStorageService.class
 com\example\app\enums\DifficultyLevel.class
+com\example\app\repository\TeacherRepository.class
 com\example\app\dto\request\QuestionSetCreateRequest.class
 com\example\app\entity\User$UserBuilder.class
 com\example\app\enums\SchoolStatus.class
@@ -44,6 +50,7 @@ com\example\app\repository\UserRepository.class
 com\example\app\service\QuestionSetService.class
 com\example\app\controller\UserController.class
 com\example\app\entity\Content.class
+com\example\app\entity\Teacher.class
 com\example\app\enums\UserStatus.class
 com\example\app\dto\response\SchoolResponse.class
 com\example\app\service\UserService.class
@@ -54,6 +61,7 @@ com\example\app\dto\request\QuestionSetCreateRequest$QuestionSetCreateRequestBui
 com\example\app\dto\response\QuestionResponse$QuestionResponseBuilder.class
 com\example\app\config\SecurityConfig.class
 com\example\app\exception\GlobalExceptionHandler.class
+com\example\app\dto\response\TeacherListResponse$TeacherListResponseBuilder.class
 com\example\app\entity\School.class
 com\example\app\dto\response\MessageResponse.class
 com\example\app\dto\request\ContentUploadRequest.class
@@ -75,6 +83,7 @@ com\example\app\config\PasswordConfig.class
 com\example\app\dto\response\QuestionSetStatsResponse.class
 com\example\app\dto\response\QuestionSetResponse.class
 com\example\app\dto\request\LoginRequest.class
+com\example\app\dto\request\TeacherCreateRequest.class
 com\example\app\dto\request\UserRequest.class
 com\example\app\enums\Permission.class
 com\example\app\controller\QuestionSetController.class
@@ -91,10 +100,13 @@ com\example\app\controller\HealthController.class
 com\example\app\security\CustomUserDetails.class
 com\example\app\service\impl\QuestionSetServiceImpl.class
 com\example\app\enums\ContentType.class
+com\example\app\dto\response\TeacherListResponse.class
 com\example\app\repository\ContentRepository.class
+com\example\app\service\TeacherService.class
 com\example\app\entity\QuestionSet$QuestionSetBuilder.class
 com\example\app\entity\User.class
 com\example\app\controller\SchoolController.class
+com\example\app\dto\response\TeacherResponse.class
 com\example\app\controller\AuthController.class
 com\example\app\dto\response\SchoolStatsResponse$SchoolStatsResponseBuilder.class
 com\example\app\security\JwtTokenProvider.class

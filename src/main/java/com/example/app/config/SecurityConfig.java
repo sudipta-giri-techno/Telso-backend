@@ -111,6 +111,18 @@ public class SecurityConfig {
                     "/api/question-sets", "/api/question-sets/**"
                 ).hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
 
+                // Teacher management – SCHOOL_ADMIN only for write/export operations
+                .requestMatchers(HttpMethod.POST,   "/api/teachers", "/api/teachers/**")
+                    .hasRole("SCHOOL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/teachers/**")
+                    .hasRole("SCHOOL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/teachers/**")
+                    .hasRole("SCHOOL_ADMIN")
+                .requestMatchers("/api/teachers/export", "/api/teachers/export/**")
+                    .hasRole("SCHOOL_ADMIN")
+                .requestMatchers("/api/teachers", "/api/teachers/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )
