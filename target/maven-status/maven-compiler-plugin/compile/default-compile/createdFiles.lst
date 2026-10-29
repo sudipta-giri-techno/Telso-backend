@@ -12,6 +12,7 @@ com\example\app\service\impl\SchoolServiceImpl.class
 com\example\app\controller\ContentController.class
 com\example\app\Application.class
 com\example\app\dto\request\QuestionUpdateRequest$QuestionUpdateRequestBuilder.class
+com\example\app\dto\response\ContentLibraryResponse.class
 com\example\app\entity\Content$ContentBuilder.class
 com\example\app\service\SchoolService.class
 com\example\app\security\CustomAccessDeniedHandler.class
@@ -46,6 +47,7 @@ com\example\app\enums\UserStatus.class
 com\example\app\dto\response\SchoolResponse.class
 com\example\app\service\UserService.class
 com\example\app\service\AuthService.class
+com\example\app\dto\response\ContentLibraryResponse$ContentLibraryResponseBuilder.class
 com\example\app\enums\BloomsTaxonomy.class
 com\example\app\dto\request\QuestionSetCreateRequest$QuestionSetCreateRequestBuilder.class
 com\example\app\dto\response\QuestionResponse$QuestionResponseBuilder.class

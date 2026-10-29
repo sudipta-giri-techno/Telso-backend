@@ -1,6 +1,7 @@
 package com.example.app.service.impl;
 
 import com.example.app.dto.request.ContentUploadRequest;
+import com.example.app.dto.response.ContentLibraryResponse;
 import com.example.app.dto.response.ContentResponse;
 import com.example.app.dto.response.ContentStatsResponse;
 import com.example.app.dto.response.PagedResponse;
@@ -57,8 +58,13 @@ public class ContentServiceImpl implements ContentService {
                 .topic(request.getTopic() != null && !request.getTopic().isBlank() ? request.getTopic().trim() : null)
                 .keywords(request.getKeywords() != null && !request.getKeywords().isBlank() ? request.getKeywords().trim() : null)
                 .notes(request.getNotes() != null && !request.getNotes().isBlank() ? request.getNotes().trim() : null)
+                .englishFilePath(request.getEnglishFilePath() != null && !request.getEnglishFilePath().isBlank()
+                        ? request.getEnglishFilePath().trim() : null)
+                .manipuriFilePath(request.getManipuriFilePath() != null && !request.getManipuriFilePath().isBlank()
+                        ? request.getManipuriFilePath().trim() : null)
                 .languages(new LinkedHashSet<>(resolvedLanguages))
                 .uploadedBy(uploader)
+                .active(true)
                 .build();
 
         Content saved = contentRepository.save(content);
@@ -68,7 +74,7 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     @Transactional(readOnly = true)
-    public PagedResponse<ContentResponse> getContents(
+    public ContentLibraryResponse getContents(
             String search,
             ContentType contentType,
             String targetClass,
@@ -77,9 +83,12 @@ public class ContentServiceImpl implements ContentService {
             int page,
             int size
     ) {
+        // --- Normalise filter params ---
         String cleanSearch = (search != null && !search.isBlank()) ? search.trim() : null;
-        String cleanClass = (targetClass != null && !targetClass.isBlank() && !targetClass.equalsIgnoreCase("All Classes")) ? targetClass.trim() : null;
-        String cleanSubject = (subject != null && !subject.isBlank() && !subject.equalsIgnoreCase("All Subjects")) ? subject.trim() : null;
+        String cleanClass = (targetClass != null && !targetClass.isBlank()
+                && !targetClass.equalsIgnoreCase("All Classes")) ? targetClass.trim() : null;
+        String cleanSubject = (subject != null && !subject.isBlank()
+                && !subject.equalsIgnoreCase("All Subjects")) ? subject.trim() : null;
         String cleanLang = null;
         if (language != null && !language.isBlank() && !language.equalsIgnoreCase("All Languages")) {
             String upper = language.trim().toUpperCase();
@@ -92,6 +101,7 @@ public class ContentServiceImpl implements ContentService {
             }
         }
 
+        // --- Paginated content list (filtered) ---
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<Content> contentPage = contentRepository.findWithFilters(
                 cleanSearch, contentType, cleanClass, cleanSubject, cleanLang, pageable);
@@ -100,13 +110,21 @@ public class ContentServiceImpl implements ContentService {
                 .map(ContentResponse::from)
                 .toList();
 
-        return new PagedResponse<>(
+        PagedResponse<ContentResponse> pagedResponse = new PagedResponse<>(
                 responses,
                 contentPage.getNumber(),
                 contentPage.getSize(),
                 contentPage.getTotalElements(),
                 contentPage.getTotalPages()
         );
+
+        // --- Status counts (always full dataset, not affected by filters) ---
+        ContentStatsResponse stats = buildStats();
+
+        return ContentLibraryResponse.builder()
+                .stats(stats)
+                .contents(pagedResponse)
+                .build();
     }
 
     @Override
@@ -114,23 +132,10 @@ public class ContentServiceImpl implements ContentService {
     public ContentResponse getContentById(Long id) {
         Content content = contentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Content not found with id: " + id));
+        if (!content.isActive()) {
+            throw new ResourceNotFoundException("Content not found with id: " + id);
+        }
         return ContentResponse.from(content);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public ContentStatsResponse getContentStats() {
-        long total = contentRepository.count();
-        long textbooks = contentRepository.countByContentType(ContentType.TEXTBOOK);
-        long syllabus = contentRepository.countByContentType(ContentType.SYLLABUS);
-        long notes = contentRepository.countByContentType(ContentType.NOTES_AND_REFERENCES);
-
-        return ContentStatsResponse.builder()
-                .totalContents(total)
-                .textbooks(textbooks)
-                .syllabus(syllabus)
-                .notesAndReferences(notes)
-                .build();
     }
 
     @Override
@@ -138,7 +143,29 @@ public class ContentServiceImpl implements ContentService {
         Content content = contentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Content not found with id: " + id));
 
-        contentRepository.delete(content);
-        log.info("Content deleted successfully with id={}", id);
+        if (!content.isActive()) {
+            throw new ResourceNotFoundException("Content not found with id: " + id);
+        }
+
+        // Soft delete: mark as inactive instead of physically removing the row
+        content.setActive(false);
+        contentRepository.save(content);
+        log.info("Content soft-deleted (inactive) with id={}", id);
+    }
+
+    // --- private helpers ---
+
+    private ContentStatsResponse buildStats() {
+        long total     = contentRepository.countByActiveTrue();
+        long textbooks = contentRepository.countByContentTypeAndActiveTrue(ContentType.TEXTBOOK);
+        long syllabus  = contentRepository.countByContentTypeAndActiveTrue(ContentType.SYLLABUS);
+        long notes     = contentRepository.countByContentTypeAndActiveTrue(ContentType.NOTES_AND_REFERENCES);
+
+        return ContentStatsResponse.builder()
+                .totalContents(total)
+                .textbooks(textbooks)
+                .syllabus(syllabus)
+                .notesAndReferences(notes)
+                .build();
     }
 }

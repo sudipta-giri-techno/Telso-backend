@@ -1,9 +1,8 @@
 package com.example.app.controller;
 
 import com.example.app.dto.request.ContentUploadRequest;
+import com.example.app.dto.response.ContentLibraryResponse;
 import com.example.app.dto.response.ContentResponse;
-import com.example.app.dto.response.ContentStatsResponse;
-import com.example.app.dto.response.PagedResponse;
 import com.example.app.enums.ContentType;
 import com.example.app.service.ContentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,12 +34,16 @@ public class ContentController {
     /**
      * Upload educational content.
      * Accessible exclusively to CONTENT_ADMIN.
-     * Contains language options (English, Manipuri, or both).
+     * Contains language PDF file paths for English and Manipuri.
      */
     @PostMapping
     @PreAuthorize("hasRole('CONTENT_ADMIN')")
     @Operation(summary = "Upload educational content",
-               description = "Only users with CONTENT_ADMIN role can upload content with selected language options (English, Manipuri, or both).")
+               description = """
+                   Only users with CONTENT_ADMIN role can upload content.
+                   Provide 'englishFilePath' and/or 'manipuriFilePath' with the stored PDF paths.
+                   Language selection is also auto-inferred from the provided file paths.
+                   """)
     public ResponseEntity<ContentResponse> uploadContent(
             @Valid @RequestBody ContentUploadRequest request,
             Principal principal) {
@@ -50,24 +53,18 @@ public class ContentController {
     }
 
     /**
-     * Retrieve status metrics of contents (total contents, textbooks, syllabus, notes and references).
-     */
-    @GetMapping("/status")
-    @PreAuthorize("hasAnyRole('CONTENT_ADMIN', 'CENTRAL_ADMIN')")
-    @Operation(summary = "Get content statistics / status",
-               description = "Returns aggregated counts for Total Content, Textbooks, Syllabus, and Notes & References.")
-    public ResponseEntity<ContentStatsResponse> getContentStatus() {
-        return ResponseEntity.ok(contentService.getContentStats());
-    }
-
-    /**
      * Show / search content library with filters and pagination.
+     * Always includes aggregated status counts (stats) regardless of active filters.
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('CONTENT_ADMIN', 'CENTRAL_ADMIN')")
-    @Operation(summary = "Show content library (paginated with filters)",
-               description = "Search and filter educational content by title, subject, chapter, topic, class, and language.")
-    public ResponseEntity<PagedResponse<ContentResponse>> getContents(
+    @Operation(summary = "Show content library (paginated with filters + status counts)",
+               description = """
+                   Search and filter educational content by title, subject, chapter, topic, class, and language.
+                   The response always contains 'stats' (total, textbooks, syllabus, notes counts over all active
+                   content) in addition to the filtered/paginated 'contents' list.
+                   """)
+    public ResponseEntity<ContentLibraryResponse> getContents(
             @Parameter(description = "Search term in title, subject, chapter, topic, or keywords")
             @RequestParam(required = false) String search,
 
@@ -101,12 +98,14 @@ public class ContentController {
     }
 
     /**
-     * Delete content item by ID.
+     * Soft-delete content item by ID.
+     * Sets active = false; the row is NOT physically removed from the database.
      * Accessible exclusively to CONTENT_ADMIN.
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('CONTENT_ADMIN')")
-    @Operation(summary = "Delete content item (CONTENT_ADMIN only)")
+    @Operation(summary = "Soft-delete content item (CONTENT_ADMIN only)",
+               description = "Marks the content as inactive (active = false). The record is retained in the database.")
     public ResponseEntity<Void> deleteContent(@PathVariable Long id) {
         contentService.deleteContent(id);
         return ResponseEntity.noContent().build();

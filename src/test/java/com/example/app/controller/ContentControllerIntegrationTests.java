@@ -1,4 +1,3 @@
-
 package com.example.app.controller;
 
 import com.example.app.entity.Content;
@@ -28,10 +27,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -101,14 +108,14 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Content Admin uploads content with both English and Manipuri language options selected")
+    @DisplayName("Content Admin uploads content with English and Manipuri")
     void contentAdminCanUploadContentWithBothLanguages() throws Exception {
 
         Map<String, Object> body = new HashMap<>();
         body.put("title", "Science Textbook");
         body.put("description", "Standard science textbook for class 8");
         body.put("contentType", "TEXTBOOK");
-        body.put("class", "8");
+        body.put("targetClass", "8");
         body.put("subject", "Science");
         body.put("chapter", "Human Body");
         body.put("topic", "Digestive System");
@@ -121,10 +128,12 @@ class ContentControllerIntegrationTests {
                         .content(objectMapper.writeValueAsString(body))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.title").value("Science Textbook"))
                 .andExpect(jsonPath("$.contentType").value("TEXTBOOK"))
+                // The existing response contract uses "class".
                 .andExpect(jsonPath("$.class").value("8"))
                 .andExpect(jsonPath("$.subject").value("Science"))
                 .andExpect(jsonPath("$.chapter").value("Human Body"))
@@ -140,7 +149,7 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Content Admin uploads content with only English language option selected")
+    @DisplayName("Content Admin uploads content with English only")
     void contentAdminCanUploadContentWithSingleLanguage() throws Exception {
 
         Map<String, Object> body = new HashMap<>();
@@ -157,13 +166,14 @@ class ContentControllerIntegrationTests {
                         .content(objectMapper.writeValueAsString(body))
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.title").value("History Textbook"))
                 .andExpect(jsonPath("$.languages", contains("EN")));
     }
 
     @Test
-    @DisplayName("Central Admin cannot upload content - restricted strictly to CONTENT_ADMIN")
+    @DisplayName("Central Admin cannot upload content")
     void centralAdminCannotUploadContent() throws Exception {
 
         Map<String, Object> body = new HashMap<>();
@@ -182,7 +192,7 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Regular User cannot upload content - restricted to CONTENT_ADMIN")
+    @DisplayName("Regular User cannot upload content")
     void regularUserCannotUploadContent() throws Exception {
 
         Map<String, Object> body = new HashMap<>();
@@ -200,7 +210,7 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Unauthenticated request to upload content is rejected with 401")
+    @DisplayName("Unauthenticated request to upload content is rejected")
     void unauthenticatedCannotUploadContent() throws Exception {
 
         Map<String, Object> body = new HashMap<>();
@@ -216,43 +226,7 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Get status of content returns correct counts for total, textbooks, syllabus, notes and references")
-    void getContentStatusReturnsAccurateCounts() throws Exception {
-
-        createSampleContent(
-                "Math Textbook", ContentType.TEXTBOOK,
-                "10", "Math", Set.of("EN"));
-
-        createSampleContent(
-                "Science Textbook", ContentType.TEXTBOOK,
-                "9", "Science", Set.of("EN", "MR"));
-
-        createSampleContent(
-                "Annual Syllabus", ContentType.SYLLABUS,
-                "6 - 10", "All Subjects", Set.of("EN", "MR"));
-
-        createSampleContent(
-                "Manipuri Notes", ContentType.NOTES_AND_REFERENCES,
-                "6", "Manipuri", Set.of("MR"));
-
-        createSampleContent(
-                "Physics Formula Sheet", ContentType.NOTES_AND_REFERENCES,
-                "10", "Physics", Set.of("EN"));
-
-        mockMvc.perform(get("/api/contents/status")
-                        .header(HttpHeaders.AUTHORIZATION,
-                                "Bearer " + contentAdminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalContents").value(5))
-                .andExpect(jsonPath("$.totalContent").value(5))
-                .andExpect(jsonPath("$.textbooks").value(2))
-                .andExpect(jsonPath("$.syllabus").value(1))
-                .andExpect(jsonPath("$.notesAndReferences").value(2))
-                .andExpect(jsonPath("$.notes").value(2));
-    }
-
-    @Test
-    @DisplayName("Show content with search and filters (title, subject, class, language, pagination)")
+    @DisplayName("Content library supports filtering and pagination")
     void getContentsWithFiltersAndPagination() throws Exception {
 
         createSampleContent(
@@ -271,65 +245,76 @@ class ContentControllerIntegrationTests {
                 "Manipuri Grammar Notes", ContentType.NOTES_AND_REFERENCES,
                 "6", "Manipuri", Set.of("MR"));
 
-        // 1. All contents (no filter)
+        // Assumes ContentLibraryResponse contains a "contents" property
+        // whose value is the paginated response.
+
+        // 1. All contents
         mockMvc.perform(get("/api/contents")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(4))
-                .andExpect(jsonPath("$.content", hasSize(4)));
+                .andExpect(jsonPath("$.contents.totalItems").value(4))
+                .andExpect(jsonPath("$.contents.content", hasSize(4)));
 
-        // 2. Filter by contentType: TEXTBOOK
+        // 2. Filter by content type
         mockMvc.perform(get("/api/contents")
                         .param("contentType", "TEXTBOOK")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(2))
-                .andExpect(jsonPath("$.content[0].contentType")
+                .andExpect(jsonPath("$.contents.totalItems").value(2))
+                .andExpect(jsonPath("$.contents.content[0].contentType")
                         .value("TEXTBOOK"))
-                .andExpect(jsonPath("$.content[1].contentType")
+                .andExpect(jsonPath("$.contents.content[1].contentType")
                         .value("TEXTBOOK"));
 
-        // 3. Filter by class: 8
+        // 3. Filter by class
         mockMvc.perform(get("/api/contents")
                         .param("class", "8")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(1))
-                .andExpect(jsonPath("$.content[0].title")
+                .andExpect(jsonPath("$.contents.totalItems").value(1))
+                .andExpect(jsonPath("$.contents.content[0].title")
                         .value("Science Textbook"));
 
-        // 4. Filter by subject: Manipuri
+        // 4. Filter by subject
         mockMvc.perform(get("/api/contents")
                         .param("subject", "Manipuri")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(1))
-                .andExpect(jsonPath("$.content[0].title")
+                .andExpect(jsonPath("$.contents.totalItems").value(1))
+                .andExpect(jsonPath("$.contents.content[0].title")
                         .value("Manipuri Grammar Notes"));
 
-        // 5. Filter by language: MR
-        // Three records contain MR: Science Textbook,
-        // Syllabus 2024-25, and Manipuri Grammar Notes.
+        // 5. Filter by language
         mockMvc.perform(get("/api/contents")
                         .param("language", "MR")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(3));
+                .andExpect(jsonPath("$.contents.totalItems").value(3));
 
-        // 6. Search query
+        // 6. Search
         mockMvc.perform(get("/api/contents")
                         .param("search", "Grammar")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalItems").value(1))
-                .andExpect(jsonPath("$.content[0].title")
+                .andExpect(jsonPath("$.contents.totalItems").value(1))
+                .andExpect(jsonPath("$.contents.content[0].title")
                         .value("Manipuri Grammar Notes"));
+    }
+
+    @Test
+    @DisplayName("Central Admin can view the content library")
+    void centralAdminCanViewContentLibrary() throws Exception {
+
+        mockMvc.perform(get("/api/contents")
+                        .header(HttpHeaders.AUTHORIZATION,
+                                "Bearer " + centralAdminToken))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -350,7 +335,7 @@ class ContentControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Content Admin can delete content")
+    @DisplayName("Content Admin can soft-delete content")
     void contentAdminCanDeleteContent() throws Exception {
 
         Content content = createSampleContent(
@@ -362,7 +347,13 @@ class ContentControllerIntegrationTests {
                                 "Bearer " + contentAdminToken))
                 .andExpect(status().isNoContent());
 
-        assertFalse(contentRepository.existsById(content.getId()));
+        // Soft deletion keeps the row but marks it inactive.
+        assertTrue(contentRepository.existsById(content.getId()));
+
+        Content deletedContent = contentRepository.findById(content.getId())
+                .orElseThrow();
+
+        assertFalse(deletedContent.isActive());
     }
 
     private Content createSampleContent(

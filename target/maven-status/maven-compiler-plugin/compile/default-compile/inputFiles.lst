@@ -20,6 +20,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\SchoolCreateRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\UserRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\VerifyOtpRequest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentLibraryResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentStatsResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\LoginResponse.java

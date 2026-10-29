@@ -12,11 +12,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
-    long countByContentType(ContentType contentType);
+    /**
+     * Count only active content of a specific type (excludes soft-deleted records).
+     */
+    long countByContentTypeAndActiveTrue(ContentType contentType);
 
+    /**
+     * Count all active content (excludes soft-deleted records).
+     */
+    long countByActiveTrue();
+
+    /**
+     * Paginated, filtered search over active content only.
+     * Soft-deleted records (active = false) are always excluded.
+     */
     @Query("""
         SELECT c FROM Content c
-        WHERE (:search IS NULL OR :search = ''
+        WHERE c.active = true
+        AND (:search IS NULL OR :search = ''
                 OR LOWER(c.title) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(c.subject) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
                 OR LOWER(c.chapter) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))

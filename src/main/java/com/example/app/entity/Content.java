@@ -20,7 +20,8 @@ import java.util.Set;
         @Index(name = "idx_contents_type", columnList = "content_type"),
         @Index(name = "idx_contents_class", columnList = "target_class"),
         @Index(name = "idx_contents_subject", columnList = "subject"),
-        @Index(name = "idx_contents_created_at", columnList = "created_at")
+        @Index(name = "idx_contents_created_at", columnList = "created_at"),
+        @Index(name = "idx_contents_active", columnList = "active")
     }
 )
 @Getter
@@ -61,6 +62,26 @@ public class Content {
 
     @Column(length = 500)
     private String notes;
+
+    /**
+     * File path / URL for the English-language PDF uploaded for this content.
+     */
+    @Column(name = "english_file_path", length = 1000)
+    private String englishFilePath;
+
+    /**
+     * File path / URL for the Manipuri-language PDF uploaded for this content.
+     */
+    @Column(name = "manipuri_file_path", length = 1000)
+    private String manipuriFilePath;
+
+    /**
+     * Soft-delete flag. true = active/visible; false = logically deleted.
+     * Default is true (content is active when created).
+     */
+    @Builder.Default
+    @Column(name = "active", nullable = false)
+    private boolean active = true;
 
     /**
      * Language of file: English and/or Manipuri (Monipuri).

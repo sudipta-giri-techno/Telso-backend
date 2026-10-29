@@ -34,6 +34,15 @@ public class ContentResponse {
     private String keywords;
     private String notes;
 
+    /** File path / URL for the uploaded English PDF. */
+    private String englishFilePath;
+
+    /** File path / URL for the uploaded Manipuri PDF. */
+    private String manipuriFilePath;
+
+    /** Whether this content record is active (false = soft-deleted). */
+    private boolean active;
+
     @Builder.Default
     private Set<String> languages = new LinkedHashSet<>();
 
@@ -93,6 +102,9 @@ public class ContentResponse {
                 .chapterTopic(chapterTopic)
                 .keywords(content.getKeywords())
                 .notes(content.getNotes())
+                .englishFilePath(content.getEnglishFilePath())
+                .manipuriFilePath(content.getManipuriFilePath())
+                .active(content.isActive())
                 .languages(content.getLanguages() != null ? new LinkedHashSet<>(content.getLanguages()) : new LinkedHashSet<>())
                 .uploaderId(uploaderId)
                 .uploaderName(uploaderName)
