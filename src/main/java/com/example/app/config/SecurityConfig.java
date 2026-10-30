@@ -123,6 +123,66 @@ public class SecurityConfig {
                 .requestMatchers("/api/teachers", "/api/teachers/**")
                     .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
 
+                // Classroom Operator management – SCHOOL_ADMIN and CENTRAL_ADMIN
+                .requestMatchers(HttpMethod.POST,   "/api/classroom-operators", "/api/classroom-operators/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/classroom-operators/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/classroom-operators/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/classroom-operators/export", "/api/classroom-operators/export/**", "/api/classroom-operators/template")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/classroom-operators", "/api/classroom-operators/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
+                // Student management – SCHOOL_ADMIN and CENTRAL_ADMIN
+                .requestMatchers(HttpMethod.POST,   "/api/students", "/api/students/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/students/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/students/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/students/export", "/api/students/export/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/students", "/api/students/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
+                // Classes management – SCHOOL_ADMIN and CENTRAL_ADMIN
+                .requestMatchers(HttpMethod.POST,   "/api/classes", "/api/classes/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/classes/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/classes/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/classes/export", "/api/classes/export/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/classes", "/api/classes/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
+                // Sections management – SCHOOL_ADMIN and CENTRAL_ADMIN
+                .requestMatchers(HttpMethod.POST,   "/api/sections", "/api/sections/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/sections/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/sections/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/sections/export", "/api/sections/export/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/sections", "/api/sections/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
+                // Subjects management – SCHOOL_ADMIN and CENTRAL_ADMIN
+                .requestMatchers(HttpMethod.POST,   "/api/subjects", "/api/subjects/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/subjects/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/subjects/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/subjects/export", "/api/subjects/export/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/subjects", "/api/subjects/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )

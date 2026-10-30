@@ -1,7 +1,17 @@
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\ApplicationTests.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\AuthRegisterIntegrationTests.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\ClassroomOperatorControllerTest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\ContentControllerIntegrationTests.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\QuestionSetControllerIntegrationTests.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\SchoolClassControllerTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\SectionControllerTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\StudentControllerTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\controller\SubjectControllerTest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\mapper\SchoolMapperTest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\mapper\UserMapperTest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\security\SecurityIntegrationTests.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\service\ClassroomOperatorServiceTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\service\SchoolClassServiceTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\service\SectionServiceTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\service\StudentServiceTest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\test\java\com\example\app\service\SubjectServiceTest.java

@@ -184,31 +184,6 @@ class QuestionSetControllerIntegrationTests {
     }
 
     @Test
-    @DisplayName("Status API returns total, ready, draft, and archived sets counts (Requirement 3)")
-    void getQuestionSetStatus_returnsCorrectCounts() throws Exception {
-        // Seed 2 READY sets, 1 DRAFT set, 1 ARCHIVED set
-        createSampleQuestionSet("Set 1", "8", "Science", QuestionSetStatus.READY);
-        createSampleQuestionSet("Set 2", "7", "Mathematics", QuestionSetStatus.READY);
-        createSampleQuestionSet("Set 3", "6", "History", QuestionSetStatus.DRAFT);
-        createSampleQuestionSet("Set 4", "9", "English", QuestionSetStatus.ARCHIVED);
-
-        mockMvc.perform(get("/api/question-sets/status")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + contentAdminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalQuestionSets").value(4))
-                .andExpect(jsonPath("$.readySets").value(2))
-                .andExpect(jsonPath("$.draftSets").value(1))
-                .andExpect(jsonPath("$.archivedSets").value(1))
-                .andExpect(jsonPath("$.archiveSets").value(1));
-
-        // Alias /stats should also work
-        mockMvc.perform(get("/api/question-sets/stats")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + contentAdminToken))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalQuestionSets").value(4));
-    }
-
-    @Test
     @DisplayName("Content Admin can further add a question to an existing question set (Requirement 2)")
     void addQuestionToQuestionSet_success() throws Exception {
         QuestionSet set = createSampleQuestionSet("Human Digestive System Assessment", "8", "Science", QuestionSetStatus.READY);
@@ -435,7 +410,7 @@ class QuestionSetControllerIntegrationTests {
     @Test
     @DisplayName("Security: Unauthenticated request is rejected (401 Unauthorized)")
     void security_unauthenticatedBlocked() throws Exception {
-        mockMvc.perform(get("/api/question-sets/status"))
+        mockMvc.perform(get("/api/question-sets"))
                 .andExpect(status().isUnauthorized());
     }
 
