@@ -1,7 +1,6 @@
 package com.example.app.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Question types supported in Telso Saarthi Question Sets.

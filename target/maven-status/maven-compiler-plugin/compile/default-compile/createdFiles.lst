@@ -17,6 +17,7 @@ com\example\app\dto\response\SubjectResponse$SubjectResponseBuilder.class
 com\example\app\dto\request\QuestionUpdateRequest$QuestionUpdateRequestBuilder.class
 com\example\app\dto\response\SchoolClassListResponse.class
 com\example\app\entity\Content$ContentBuilder.class
+com\example\app\dto\request\AskQuestionRequest$ChatMessage.class
 com\example\app\dto\request\SubjectUpdateRequest.class
 com\example\app\dto\response\ClassroomOperatorBulkUploadResponse.class
 com\example\app\security\JwtAuthenticationFilter.class
@@ -31,6 +32,7 @@ com\example\app\config\OpenApiConfig.class
 com\example\app\dto\response\TeacherResponse$TeacherResponseBuilder.class
 com\example\app\dto\response\UserResponse.class
 com\example\app\dto\response\QuestionSetStatsResponse$QuestionSetStatsResponseBuilder.class
+com\example\app\controller\AiKnowledgeController.class
 com\example\app\entity\Question$QuestionBuilder.class
 com\example\app\dto\response\SectionListResponse.class
 com\example\app\entity\School$SchoolBuilder.class
@@ -62,6 +64,7 @@ com\example\app\dto\request\QuestionSetCreateRequest$QuestionSetCreateRequestBui
 com\example\app\dto\request\SectionUpdateRequest$SectionUpdateRequestBuilder.class
 com\example\app\dto\response\SubjectResponse.class
 com\example\app\controller\SchoolClassController.class
+com\example\app\dto\request\AskQuestionRequest$AskQuestionRequestBuilder.class
 com\example\app\entity\Student$StudentBuilder.class
 com\example\app\dto\response\SchoolClassListResponse$SchoolClassListResponseBuilder.class
 com\example\app\dto\response\TeacherListResponse$TeacherListResponseBuilder.class
@@ -117,6 +120,7 @@ com\example\app\dto\response\SchoolClassResponse$SchoolClassResponseBuilder.clas
 com\example\app\entity\ClassroomOperator$ClassroomOperatorBuilder.class
 com\example\app\repository\QuestionRepository.class
 com\example\app\dto\request\QuestionCreateRequest.class
+com\example\app\service\GeminiAiService.class
 com\example\app\dto\response\SchoolStatsResponse.class
 com\example\app\dto\request\ClassroomOperatorUpdateRequest.class
 com\example\app\entity\QuestionSet.class
@@ -139,6 +143,7 @@ com\example\app\enums\Gender.class
 com\example\app\dto\response\SchoolClassResponse.class
 com\example\app\entity\Section$SectionBuilder.class
 com\example\app\enums\QuestionType.class
+com\example\app\dto\response\AskQuestionResponse.class
 com\example\app\enums\DifficultyLevel.class
 com\example\app\dto\request\QuestionSetCreateRequest.class
 com\example\app\entity\User$UserBuilder.class
@@ -155,6 +160,7 @@ com\example\app\service\impl\SubjectServiceImpl.class
 com\example\app\dto\response\ContentLibraryResponse$ContentLibraryResponseBuilder.class
 com\example\app\enums\BloomsTaxonomy.class
 com\example\app\dto\response\QuestionResponse$QuestionResponseBuilder.class
+com\example\app\service\impl\GeminiAiServiceImpl.class
 com\example\app\dto\request\StudentUpdateRequest$StudentUpdateRequestBuilder.class
 com\example\app\config\SecurityConfig.class
 com\example\app\exception\GlobalExceptionHandler.class
@@ -182,11 +188,14 @@ com\example\app\enums\Permission.class
 com\example\app\service\impl\ContentPackageServiceImpl.class
 com\example\app\controller\QuestionSetController.class
 com\example\app\dto\request\SchoolClassCreateRequest$SchoolClassCreateRequestBuilder.class
+com\example\app\dto\response\AskQuestionResponse$SourceReference$SourceReferenceBuilder.class
 com\example\app\dto\response\ContentResponse$1.class
 com\example\app\dto\request\SchoolCreateRequest$SchoolCreateRequestBuilder.class
+com\example\app\dto\response\AskQuestionResponse$SourceReference.class
 com\example\app\dto\response\SectionResponse.class
 com\example\app\exception\UnauthorizedException.class
 com\example\app\security\CustomUserDetailsService.class
+com\example\app\dto\request\AskQuestionRequest.class
 com\example\app\dto\request\StudentCreateRequest$StudentCreateRequestBuilder.class
 com\example\app\service\ClassroomOperatorService.class
 com\example\app\dto\request\ForgotPasswordRequest.class
@@ -200,4 +209,6 @@ com\example\app\entity\QuestionSet$QuestionSetBuilder.class
 com\example\app\dto\response\ClassroomOperatorResponse$ClassroomOperatorResponseBuilder.class
 com\example\app\dto\response\SchoolStatsResponse$SchoolStatsResponseBuilder.class
 com\example\app\service\SchoolClassService.class
+com\example\app\dto\response\AskQuestionResponse$AskQuestionResponseBuilder.class
 com\example\app\security\JwtTokenProvider.class
+com\example\app\config\AiConfig.class

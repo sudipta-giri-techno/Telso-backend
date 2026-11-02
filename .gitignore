@@ -16,3 +16,7 @@ target/
 
 # Uploads
 uploads/
+
+
+# Environment variables
+.env

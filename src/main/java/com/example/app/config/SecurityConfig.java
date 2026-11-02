@@ -94,6 +94,11 @@ public class SecurityConfig {
                     "/api/contents", "/api/contents/**"
                 ).hasAnyRole("CENTRAL_ADMIN", "CONTENT_ADMIN")
 
+                // AI Knowledge Testing (Google Gemini) for Content Admin
+                .requestMatchers(
+                    "/api/ai/**"
+                ).hasAnyRole("CONTENT_ADMIN", "CENTRAL_ADMIN")
+
                 // Question Sets management and viewing
                 .requestMatchers(
                     HttpMethod.POST, "/api/question-sets", "/api/question-sets/**"
