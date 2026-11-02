@@ -4,7 +4,7 @@ import com.example.app.dto.request.AskQuestionRequest;
 import com.example.app.dto.response.AskQuestionResponse;
 import com.example.app.entity.Content;
 import com.example.app.repository.ContentRepository;
-import com.example.app.service.GeminiAiService;
+import com.example.app.service.AiKnowledgeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -29,7 +29,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GeminiAiServiceImpl implements GeminiAiService {
+public class AiKnowledgeServiceImpl implements AiKnowledgeService {
 
     private final ChatClient chatClient;
     private final ContentRepository contentRepository;

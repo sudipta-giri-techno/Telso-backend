@@ -2,7 +2,8 @@ package com.example.app.controller;
 
 import com.example.app.dto.request.AskQuestionRequest;
 import com.example.app.dto.response.AskQuestionResponse;
-import com.example.app.service.GeminiAiService;
+import com.example.app.service.AiKnowledgeService;
+import com.example.app.service.AiKnowledgeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class AiKnowledgeControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private GeminiAiService geminiAiService;
+    private AiKnowledgeService aiKnowledgeService;
 
     @Test
     @DisplayName("Content Admin can ask questions to Gemini AI")
@@ -54,7 +55,7 @@ class AiKnowledgeControllerTest {
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        Mockito.when(geminiAiService.answerQuestion(any(AskQuestionRequest.class)))
+        Mockito.when(aiKnowledgeService.answerQuestion(any(AskQuestionRequest.class)))
                 .thenReturn(mockResponse);
 
         mockMvc.perform(post("/api/ai/ask")

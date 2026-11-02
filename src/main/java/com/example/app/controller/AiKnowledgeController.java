@@ -2,7 +2,7 @@ package com.example.app.controller;
 
 import com.example.app.dto.request.AskQuestionRequest;
 import com.example.app.dto.response.AskQuestionResponse;
-import com.example.app.service.GeminiAiService;
+import com.example.app.service.AiKnowledgeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "bearerAuth")
 public class AiKnowledgeController {
 
-    private final GeminiAiService geminiAiService;
+    private final AiKnowledgeService aiKnowledgeService;
 
     @PostMapping("/ask")
     @PreAuthorize("hasAnyRole('CONTENT_ADMIN', 'CENTRAL_ADMIN')")
     @Operation(summary = "Ask question to Gemini AI (Free Model)",
                description = "Answers educational and content questions asked by Content Admin or Central Admin using Google Gemini API.")
     public ResponseEntity<AskQuestionResponse> askQuestion(@Valid @RequestBody AskQuestionRequest request) {
-        AskQuestionResponse response = geminiAiService.answerQuestion(request);
+        AskQuestionResponse response = aiKnowledgeService.answerQuestion(request);
         return ResponseEntity.ok(response);
     }
 }

@@ -4,7 +4,7 @@ import com.example.app.dto.request.AskQuestionRequest;
 import com.example.app.dto.response.AskQuestionResponse;
 import com.example.app.entity.Content;
 import com.example.app.repository.ContentRepository;
-import com.example.app.service.impl.GeminiAiServiceImpl;
+import com.example.app.service.impl.AiKnowledgeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class GeminiAiServiceImplTest {
+class AiKnowledgeServiceTest {
 
     @Mock
     private ChatClient chatClient;
@@ -39,11 +39,11 @@ class GeminiAiServiceImplTest {
     @Mock
     private ContentRepository contentRepository;
 
-    private GeminiAiServiceImpl geminiAiService;
+    private AiKnowledgeServiceImpl geminiAiService;
 
     @BeforeEach
     void setUp() {
-        geminiAiService = new GeminiAiServiceImpl(chatClient, contentRepository);
+        geminiAiService = new AiKnowledgeServiceImpl(chatClient, contentRepository);
         ReflectionTestUtils.setField(geminiAiService, "apiKey", "test-valid-key");
         ReflectionTestUtils.setField(geminiAiService, "modelName", "gemini-1.5-flash");
     }

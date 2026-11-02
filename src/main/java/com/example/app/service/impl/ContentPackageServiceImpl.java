@@ -44,7 +44,7 @@ public class ContentPackageServiceImpl implements ContentPackageService {
             Pageable pageable) {
 
         // Validate operator
-        ClassroomOperator operator = operatorRepository.findById(operatorId)
+        ClassroomOperator operator =operatorRepository.findById(operatorId)
                 .orElseThrow(() -> new EntityNotFoundException("Classroom operator not found: " + operatorId));
 
         // Load all active content (filtered by search / class / subject)

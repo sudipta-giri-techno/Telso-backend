@@ -13,7 +13,6 @@ com\example\app\controller\ContentControllerIntegrationTests.class
 com\example\app\service\SchoolClassServiceTest.class
 com\example\app\controller\ContentPackageControllerTest.class
 com\example\app\mapper\UserMapperTest.class
-com\example\app\service\GeminiAiServiceImplTest.class
 com\example\app\service\SectionServiceTest.class
 com\example\app\service\StudentServiceTest.class
 com\example\app\controller\AuthRegisterIntegrationTests.class

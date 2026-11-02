@@ -3,7 +3,7 @@ package com.example.app.service;
 import com.example.app.dto.request.AskQuestionRequest;
 import com.example.app.dto.response.AskQuestionResponse;
 
-public interface GeminiAiService {
+public interface AiKnowledgeService {
 
     /**
      * Answers questions asked by Content Admin using Gemini Free Model.

@@ -71,6 +71,7 @@ com\example\app\dto\response\TeacherListResponse$TeacherListResponseBuilder.clas
 com\example\app\repository\SectionRepository.class
 com\example\app\entity\School.class
 com\example\app\service\StudentService.class
+com\example\app\service\AiKnowledgeService.class
 com\example\app\dto\request\ContentUploadRequest.class
 com\example\app\dto\response\SubjectListResponse.class
 com\example\app\dto\request\SubjectUpdateRequest$SubjectUpdateRequestBuilder.class
@@ -120,7 +121,6 @@ com\example\app\dto\response\SchoolClassResponse$SchoolClassResponseBuilder.clas
 com\example\app\entity\ClassroomOperator$ClassroomOperatorBuilder.class
 com\example\app\repository\QuestionRepository.class
 com\example\app\dto\request\QuestionCreateRequest.class
-com\example\app\service\GeminiAiService.class
 com\example\app\dto\response\SchoolStatsResponse.class
 com\example\app\dto\request\ClassroomOperatorUpdateRequest.class
 com\example\app\entity\QuestionSet.class
@@ -160,7 +160,6 @@ com\example\app\service\impl\SubjectServiceImpl.class
 com\example\app\dto\response\ContentLibraryResponse$ContentLibraryResponseBuilder.class
 com\example\app\enums\BloomsTaxonomy.class
 com\example\app\dto\response\QuestionResponse$QuestionResponseBuilder.class
-com\example\app\service\impl\GeminiAiServiceImpl.class
 com\example\app\dto\request\StudentUpdateRequest$StudentUpdateRequestBuilder.class
 com\example\app\config\SecurityConfig.class
 com\example\app\exception\GlobalExceptionHandler.class
@@ -202,6 +201,7 @@ com\example\app\dto\request\ForgotPasswordRequest.class
 com\example\app\service\ContentService.class
 com\example\app\security\CustomUserDetails.class
 com\example\app\enums\ContentType.class
+com\example\app\service\impl\AiKnowledgeServiceImpl.class
 com\example\app\dto\response\TeacherListResponse.class
 com\example\app\repository\ContentRepository.class
 com\example\app\service\TeacherService.class
