@@ -49,4 +49,25 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
         @Param("language") String language,
         Pageable pageable
     );
+
+    /**
+     * Filtered search for content packages (used by ContentPackageService).
+     * Supports search, className, and subject filters; language filtering is
+     * done in-memory to reuse the existing languages element collection.
+     */
+    @Query("""
+        SELECT c FROM Content c
+        WHERE c.active = true
+          AND (:search IS NULL OR :search = ''
+                OR LOWER(c.title) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%'))
+                OR LOWER(c.subject) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
+          AND (:className IS NULL OR :className = '' OR LOWER(c.targetClass) = LOWER(CAST(:className AS string)))
+          AND (:subject IS NULL OR :subject = '' OR LOWER(c.subject) = LOWER(CAST(:subject AS string)))
+        """)
+    Page<Content> findActiveContents(
+        @Param("search") String search,
+        @Param("className") String className,
+        @Param("subject") String subject,
+        Pageable pageable
+    );
 }

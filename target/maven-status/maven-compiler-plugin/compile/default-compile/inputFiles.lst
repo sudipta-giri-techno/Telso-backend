@@ -5,6 +5,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\AuthController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\ClassroomOperatorController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\ContentController.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\ContentPackageController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\HealthController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\QuestionSetController.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\controller\SchoolClassController.java
@@ -18,6 +19,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\ClassroomOperatorUpdateRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\ContentUploadRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\ForgotPasswordRequest.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\InstallPackageRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\LoginRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\QuestionCreateRequest.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\request\QuestionSetCreateRequest.java
@@ -42,6 +44,9 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ClassroomOperatorListResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ClassroomOperatorResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentLibraryResponse.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentPackageListResponse.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentPackageResponse.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentPackageStatsResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\ContentStatsResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\LoginResponse.java
@@ -69,6 +74,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\dto\response\VerifyOtpResponse.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\ClassroomOperator.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\Content.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\ContentInstallation.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\Question.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\QuestionSet.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\School.java
@@ -79,6 +85,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\Teacher.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\entity\User.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\BloomsTaxonomy.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\ContentInstallationStatus.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\ContentType.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\DifficultyLevel.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\enums\Gender.java
@@ -95,6 +102,7 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\mapper\SchoolMapper.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\mapper\UserMapper.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\ClassroomOperatorRepository.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\ContentInstallationRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\ContentRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\QuestionRepository.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\repository\QuestionSetRepository.java
@@ -113,10 +121,12 @@ C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\security\JwtTokenProvider.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\AuthService.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\ClassroomOperatorService.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\ContentPackageService.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\ContentService.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\FileStorageService.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\AuthServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\ClassroomOperatorServiceImpl.java
+C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\ContentPackageServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\ContentServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\QuestionSetServiceImpl.java
 C:\Users\test\OneDrive\Desktop\Java Codes\spring-boot_api_test\src\main\java\com\example\app\service\impl\SchoolClassServiceImpl.java

@@ -63,6 +63,9 @@ public class Content {
     @Column(length = 500)
     private String notes;
 
+    @Column(length = 20)
+    private String version;
+
     /**
      * File path / URL for the English-language PDF uploaded for this content.
      */

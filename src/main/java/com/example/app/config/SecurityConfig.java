@@ -183,6 +183,12 @@ public class SecurityConfig {
                 .requestMatchers("/api/subjects", "/api/subjects/**")
                     .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
 
+                // Content Packages – view accessible to SCHOOL_ADMIN, CENTRAL_ADMIN, CONTENT_ADMIN
+                .requestMatchers(HttpMethod.POST, "/api/content-packages/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN")
+                .requestMatchers("/api/content-packages", "/api/content-packages/**")
+                    .hasAnyRole("SCHOOL_ADMIN", "CENTRAL_ADMIN", "CONTENT_ADMIN")
+
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )
