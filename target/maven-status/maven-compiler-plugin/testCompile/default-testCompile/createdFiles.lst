@@ -1,6 +1,7 @@
 com\example\app\controller\SectionControllerTest.class
 com\example\app\controller\SubjectControllerTest.class
 com\example\app\ApplicationTests.class
+com\example\app\service\AiKnowledgeServiceTest.class
 com\example\app\controller\SchoolClassControllerTest.class
 com\example\app\controller\AiKnowledgeControllerTest.class
 com\example\app\controller\StudentControllerTest.class

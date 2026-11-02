@@ -18,7 +18,9 @@
     import com.example.app.repository.UserRepository;
     import com.example.app.security.JwtTokenProvider;
     import com.example.app.service.AuthService;
-    import lombok.RequiredArgsConstructor;
+import com.example.app.service.EmailService;
+
+import lombok.RequiredArgsConstructor;
     import lombok.extern.slf4j.Slf4j;
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
@@ -45,6 +47,7 @@
         private final PasswordEncoder passwordEncoder;
         private final JwtTokenProvider jwtTokenProvider;
         private final UserMapper userMapper;
+        private final EmailService emailService;
         private final SecureRandom secureRandom = new SecureRandom();
 
         @Override
@@ -118,9 +121,10 @@
         @Override
         @Transactional
         public MessageResponse forgotPassword(ForgotPasswordRequest request) {
-            log.info("Forgot password requested for email: {}", request.email());
+            String email = request.email().trim().toLowerCase();
+            log.info("Forgot password requested for email: {}", email);
 
-            userRepository.findByEmail(request.email()).ifPresent(user -> {
+            userRepository.findByEmail(email).ifPresent(user -> {
                 String otp = String.format("%06d", secureRandom.nextInt(1_000_000));
                 user.setOtp(otp);
                 user.setOtpExpiresAt(LocalDateTime.now().plusMinutes(OTP_EXPIRY_MINUTES));
@@ -129,13 +133,11 @@
                 user.setPasswordResetTokenExpiresAt(null);
                 userRepository.save(user);
 
-                // Log securely for dev/testing without exposing via HTTP payload
-                log.debug("Secure OTP generated for password reset (user: {}): {}", user.getEmail(), otp);
+                emailService.sendPasswordResetOtp(user.getEmail(), otp, OTP_EXPIRY_MINUTES);
             });
 
             return new MessageResponse("If the email is registered, a password reset code has been sent.");
         }
-
         @Override
         @Transactional
         public VerifyOtpResponse verifyOtp(VerifyOtpRequest request) {

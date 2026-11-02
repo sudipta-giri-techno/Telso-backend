@@ -131,6 +131,7 @@ com\example\app\dto\response\ContentLibraryResponse.class
 com\example\app\dto\response\StudentResponse$StudentResponseBuilder.class
 com\example\app\service\SchoolService.class
 com\example\app\security\CustomAccessDeniedHandler.class
+com\example\app\service\impl\EmailServiceImpl.class
 com\example\app\dto\response\ContentPackageListResponse$ContentPackageListResponseBuilder.class
 com\example\app\dto\request\SubjectCreateRequest.class
 com\example\app\dto\response\QuestionResponse.class
@@ -171,6 +172,7 @@ com\example\app\dto\request\SchoolClassUpdateRequest.class
 com\example\app\dto\request\SchoolClassCreateRequest.class
 com\example\app\service\impl\ContentServiceImpl.class
 com\example\app\dto\request\SchoolClassUpdateRequest$SchoolClassUpdateRequestBuilder.class
+com\example\app\service\EmailService.class
 com\example\app\dto\response\ContentStatsResponse.class
 com\example\app\service\impl\ClassroomOperatorServiceImpl.class
 com\example\app\enums\QuestionSetStatus.class

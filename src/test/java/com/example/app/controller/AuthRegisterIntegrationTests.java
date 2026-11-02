@@ -4,6 +4,7 @@ import com.example.app.entity.User;
 import com.example.app.enums.Role;
 import com.example.app.enums.UserStatus;
 import com.example.app.repository.UserRepository;
+import com.example.app.service.EmailService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,6 +48,10 @@ class AuthRegisterIntegrationTests {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    // Prevents real emails and avoids needing SMTP config in tests
+    @MockBean
+    private EmailService emailService;
 
     @BeforeEach
     void setUp() {
