@@ -46,7 +46,8 @@ public class ContentPackageServiceImpl implements ContentPackageService {
         // Validate operator
         ClassroomOperator operator =operatorRepository.findById(operatorId)
                 .orElseThrow(() -> new EntityNotFoundException("Classroom operator not found: " + operatorId));
-
+        
+        System.out.println("Operator: " + operator.getName() + " (ID: " + operatorId + ")");
         // Load all active content (filtered by search / class / subject)
         Page<Content> contentPage = contentRepository.findActiveContents(
                 emptyToNull(search), emptyToNull(className), emptyToNull(subject), pageable);
