@@ -3,6 +3,7 @@ package com.example.app.config;
 import com.example.app.security.CustomAccessDeniedHandler;
 import com.example.app.security.JwtAuthenticationEntryPoint;
 import com.example.app.security.JwtAuthenticationFilter;
+import com.example.app.security.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -38,7 +40,9 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // OAuth2 authorization needs a short-lived session to preserve state/nonce.
+            // API requests still authenticate with JWTs.
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
             .exceptionHandling(exceptions -> exceptions
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(customAccessDeniedHandler)
@@ -55,6 +59,7 @@ public class SecurityConfig {
                 // Public endpoints
                 .requestMatchers("/api/ping", "/api/health").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
 
                 // Central admin only
                 .requestMatchers(
@@ -197,6 +202,7 @@ public class SecurityConfig {
                 // All remaining endpoints require authentication
                 .anyRequest().authenticated()
             )
+            .oauth2Login(oauth2 -> oauth2.successHandler(oAuth2LoginSuccessHandler))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

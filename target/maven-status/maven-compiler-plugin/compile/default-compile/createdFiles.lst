@@ -12,6 +12,7 @@ com\example\app\dto\response\QuestionResponse$1.class
 com\example\app\dto\request\ResetPasswordRequest.class
 com\example\app\controller\StudentController.class
 com\example\app\dto\request\QuestionUpdateRequest.class
+com\example\app\security\OAuth2LoginSuccessHandler.class
 com\example\app\controller\ContentController.class
 com\example\app\dto\response\SubjectResponse$SubjectResponseBuilder.class
 com\example\app\dto\request\QuestionUpdateRequest$QuestionUpdateRequestBuilder.class
@@ -28,7 +29,6 @@ com\example\app\security\JwtAuthenticationEntryPoint.class
 com\example\app\dto\response\SchoolResponse$SchoolResponseBuilder.class
 com\example\app\controller\TeacherController.class
 com\example\app\service\impl\AuthServiceImpl.class
-com\example\app\config\OpenApiConfig.class
 com\example\app\dto\response\TeacherResponse$TeacherResponseBuilder.class
 com\example\app\dto\response\UserResponse.class
 com\example\app\dto\response\QuestionSetStatsResponse$QuestionSetStatsResponseBuilder.class
@@ -85,7 +85,6 @@ com\example\app\dto\response\ContentResponse$ContentResponseBuilder.class
 com\example\app\dto\response\StudentResponse.class
 com\example\app\dto\request\SchoolCreateRequest.class
 com\example\app\service\impl\UserServiceImpl.class
-com\example\app\config\PasswordConfig.class
 com\example\app\dto\request\SubjectCreateRequest$SubjectCreateRequestBuilder.class
 com\example\app\dto\request\LoginRequest.class
 com\example\app\dto\request\TeacherCreateRequest.class
@@ -126,7 +125,6 @@ com\example\app\dto\request\ClassroomOperatorUpdateRequest.class
 com\example\app\entity\QuestionSet.class
 com\example\app\service\impl\SchoolServiceImpl.class
 com\example\app\entity\SchoolClass$SchoolClassBuilder.class
-com\example\app\Application.class
 com\example\app\dto\response\ContentLibraryResponse.class
 com\example\app\dto\response\StudentResponse$StudentResponseBuilder.class
 com\example\app\service\SchoolService.class
@@ -213,4 +211,3 @@ com\example\app\dto\response\SchoolStatsResponse$SchoolStatsResponseBuilder.clas
 com\example\app\service\SchoolClassService.class
 com\example\app\dto\response\AskQuestionResponse$AskQuestionResponseBuilder.class
 com\example\app\security\JwtTokenProvider.class
-com\example\app\config\AiConfig.class

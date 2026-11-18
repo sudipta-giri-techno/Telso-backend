@@ -58,6 +58,10 @@ logging:
     org.hibernate.SQL: INFO
 
 app:
+  oauth2:
+    google:
+      client-id: ${GOOGLE_CLIENT_ID:}
+      client-secret: ${GOOGLE_CLIENT_SECRET:}
   upload:
     dir: uploads
   mail:
